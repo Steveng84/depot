@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pragprog Books Online</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<!-- START_HIGHLIGHT -->
+<body class='<%= controller.controller_name %>'>
+<!-- END_HIGHLIGHT -->
+<div id="banner">
+  <%= image_tag("logo.png") %>
+  <%= @page_title || "Pragmatic Bookshelf" %>
+</div>
+<div id="columns">
+  <div id="side">
+    <%= hidden_div_if(current_cart.line_items.empty?, id: 'cart') do %>
+      <% render(current_cart) %>
+    <% end %>
+    
+    <ul>
+      <li><a href="http://www....">Home</a></li>
+      <li><a href="http://www..../faq">Questions</a></li>
+      <li><a href="http://www..../news">News</a></li>
+      <li><a href="http://www..../contact">Contact</a></li>
+      <li><%= link_to "Show cart", cart_path(current_cart) %></li>
+    </ul>
+  </div>
+  <div id="main">
+  <%= yield %>
+  </div>
+</div>
+</body>
+</html>
