@@ -7,7 +7,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
   #replace this with your real tests
   test "buying a product" do
     LineItem.delete_all
-    order.delete_all
+    Order.delete_all
     ruby_book = products(:ruby)
 
     get "/"
@@ -18,7 +18,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     cart = Cart.find(session[:cart_id])
     assert_equal 1, cart.line_items.size
-    assert_equal tuby_book, cart.line_item[0].product
+    assert_equal ruby_book, cart.line_items[0].product
 
     get "/orders/new"
     assert_response :success
@@ -27,7 +27,7 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     post_via_redirect "/orders",
                       order: { name:     "Kasper Taber",
                                address:  "taber sted",
-                               email:    "dave@example.com"
+                               email:    "dave@example.com",
                                pay_type: "Check" }
     assert_response :success
     assert_template "index"
@@ -48,6 +48,6 @@ class UserStoriesTest < ActionDispatch::IntegrationTest
     mail = ActionMailer::Base.deliveries.last
     assert_equal ["dave@example.com"], mail.to
     assert_equal 'Sam Ruby <depot@example.com>', mail[:from].value
-    assert_equal "pragmatic Store ORder Confirmation", mail.subject
+    assert_equal "Pragmatic Store Order Confirmation", mail.subject
   end
 end
